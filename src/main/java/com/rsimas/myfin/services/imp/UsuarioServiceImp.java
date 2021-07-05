@@ -1,8 +1,12 @@
 package com.rsimas.myfin.services.imp;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rsimas.myfin.domain.Usuario;
+import com.rsimas.myfin.exceptions.ErroAutenticacao;
 import com.rsimas.myfin.exceptions.RegraNegocioException;
 import com.rsimas.myfin.repositories.UsuarioRepository;
 import com.rsimas.myfin.services.UsuarioService;
@@ -17,16 +21,26 @@ public class UsuarioServiceImp implements UsuarioService{
 		this.repository = repo;
 	}
 
-	@Override
+	@Transactional
 	public Usuario salvar(Usuario usuario) {
-		// TODO Auto-generated method stub
-		return null;
+		validarEmail(usuario.getEmail());
+		return repository.save(usuario);
 	}
 
 	@Override
 	public Usuario autenticar(String email, String senha) {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<Usuario> usuario = repository.findByEmail(email);
+		
+		if(!usuario.isPresent()) {
+			throw new ErroAutenticacao("Usuario não encontrado!");
+		}
+		
+		if(!usuario.get().getSenha().equals(senha)) {
+			throw new ErroAutenticacao("Senha informada é inválida!");
+		}
+		
+		return usuario.get();
+		
 	}
 
 	@Override

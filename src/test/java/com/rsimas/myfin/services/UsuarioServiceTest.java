@@ -30,8 +30,7 @@ public class UsuarioServiceTest {
 			repository.deleteAll();
 			
 			//execução
-			service.validarEmail("teste@email.com");
-				
+			service.validarEmail("teste@email.com");		
 		});
 	}
 	
