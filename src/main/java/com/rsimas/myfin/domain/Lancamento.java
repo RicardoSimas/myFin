@@ -16,11 +16,15 @@ import javax.persistence.Table;
 import com.rsimas.myfin.domain.enums.StatusLancamento;
 import com.rsimas.myfin.domain.enums.TipoLancamento;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(schema = "financas")
 public class Lancamento {

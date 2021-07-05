@@ -33,4 +33,16 @@ public class UsuarioRepositoryTest {
 		//Verifição
 		Assertions.assertThat(result).isTrue();
 	}
+	
+	@org.junit.jupiter.api.Test
+	public void deveRetornarFalsoQuandoNaoExistirUsuarioComOEmail() {
+		//Cenario
+		repo.deleteAll();
+		
+		//Execução
+		boolean result = repo.existsByEmail("Usuario@email.com");
+		
+		//Verifição
+		Assertions.assertThat(result).isFalse();
+	}
 }
