@@ -27,19 +27,19 @@ public class Lancamento {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_lancamento")
+	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "desc_lancamento")
+	@Column(name = "descricao")
 	private String descricao;
 	
-	@Column(name = "ano_lancamento")
+	@Column(name = "ano")
 	private Integer ano;
 	
-	@Column(name = "mes_lancamento")
+	@Column(name = "mes")
 	private Integer mes;
 	
-	@Column(name = "valor_lancamento")
+	@Column(name = "valor")
 	private BigDecimal valor;
 	
 	@ManyToOne

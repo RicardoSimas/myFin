@@ -18,15 +18,15 @@ public class Usuario {
 	
 	@Id
 	@GeneratedValue( strategy = GenerationType.IDENTITY)
-	@Column(name = "id_usuario")
+	@Column(name = "id")
 	private Long id;
 	
-	@Column(name = "nome_usuario")
+	@Column(name = "nome")
 	private String nome;
 	
-	@Column(name = "email_usuario")
+	@Column(name = "email")
 	private String email;
 	
-	@Column(name = "senha_usuario")
+	@Column(name = "senha")
 	private String senha;
 }
