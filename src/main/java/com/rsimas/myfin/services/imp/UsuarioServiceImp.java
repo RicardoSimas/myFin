@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rsimas.myfin.domain.Usuario;
+import com.rsimas.myfin.dto.UsuarioDTO;
 import com.rsimas.myfin.exceptions.ErroAutenticacao;
 import com.rsimas.myfin.exceptions.RegraNegocioException;
 import com.rsimas.myfin.repositories.UsuarioRepository;
@@ -40,7 +41,6 @@ public class UsuarioServiceImp implements UsuarioService{
 		}
 		
 		return usuario.get();
-		
 	}
 
 	@Override
@@ -51,5 +51,8 @@ public class UsuarioServiceImp implements UsuarioService{
 		}
 	}
 	
-	
+	@Override
+	public Usuario fromDTO(UsuarioDTO objDTO) {
+		return new Usuario(null, objDTO.getEmail(), objDTO.getNome(), objDTO.getSenha());
+	}
 }
