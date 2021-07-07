@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rsimas.myfin.domain.Usuario;
 import com.rsimas.myfin.dto.UsuarioDTO;
+import com.rsimas.myfin.exceptions.ErroAutenticacao;
 import com.rsimas.myfin.exceptions.RegraNegocioException;
 import com.rsimas.myfin.services.UsuarioService;
 
@@ -20,10 +21,21 @@ public class UsuarioResource {
 	@Autowired
 	UsuarioService service;
 	
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity salvar( @RequestBody UsuarioDTO dto) {
+	@RequestMapping(value="/autenticar", method=RequestMethod.POST)
+	public ResponseEntity autenticar( @RequestBody UsuarioDTO objDto) {
 		
-		Usuario obj = service.fromDTO(dto);
+		try {
+			Usuario usuarioAutenticado = service.autenticar(objDto.getEmail(), objDto.getSenha());
+			return ResponseEntity.ok(usuarioAutenticado);
+		}catch(ErroAutenticacao e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+	
+	@RequestMapping(method=RequestMethod.POST)
+	public ResponseEntity salvar( @RequestBody UsuarioDTO objDto) {
+		
+		Usuario obj = service.fromDTO(objDto);
 		
 		try {
 			Usuario usuarioSalvo = service.salvar(obj);

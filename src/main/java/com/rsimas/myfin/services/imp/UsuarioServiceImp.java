@@ -53,6 +53,6 @@ public class UsuarioServiceImp implements UsuarioService{
 	
 	@Override
 	public Usuario fromDTO(UsuarioDTO objDTO) {
-		return new Usuario(null, objDTO.getEmail(), objDTO.getNome(), objDTO.getSenha());
+		return new Usuario(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getSenha());
 	}
 }
