@@ -1,6 +1,9 @@
 package com.rsimas.myfin.services.imp;
 
 import java.util.List;
+import java.util.Objects;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import com.rsimas.myfin.domain.Lancamento;
 import com.rsimas.myfin.domain.enums.StatusLancamento;
@@ -16,20 +19,24 @@ public class LancamentoServiceImp implements LancamentoService{
 	}
 
 	@Override
+	@Transactional
 	public Lancamento salvar(Lancamento lancamento) {
-		// TODO Auto-generated method stub
-		return null;
+		lancamento.setId(null);
+		return repository.save(lancamento);
 	}
 
 	@Override
+	@Transactional
 	public Lancamento Atualizar(Lancamento lancamento) {
-		// TODO Auto-generated method stub
-		return null;
+		Objects.requireNonNull(lancamento.getId());
+		return repository.save(lancamento);
 	}
 
 	@Override
+	@Transactional
 	public void deletar(Lancamento lancamento) {
-		// TODO Auto-generated method stub
+		Objects.requireNonNull(lancamento.getId());
+		repository.delete(lancamento);
 		
 	}
 
@@ -41,8 +48,7 @@ public class LancamentoServiceImp implements LancamentoService{
 
 	@Override
 	public void atualizarStatus(Lancamento lancamento, StatusLancamento status) {
-		// TODO Auto-generated method stub
-		
+		lancamento.setStatus(status);
+		Atualizar(lancamento);
 	}
-
 }
