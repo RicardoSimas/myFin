@@ -55,4 +55,9 @@ public class UsuarioServiceImp implements UsuarioService{
 	public Usuario fromDTO(UsuarioDTO objDTO) {
 		return new Usuario(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getSenha());
 	}
+
+	@Override
+	public Optional<Usuario> buscarPorId(Long id) {
+		return repository.findById(id);
+	}
 }

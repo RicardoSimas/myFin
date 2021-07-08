@@ -4,20 +4,28 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rsimas.myfin.domain.Lancamento;
+import com.rsimas.myfin.domain.Usuario;
 import com.rsimas.myfin.domain.enums.StatusLancamento;
+import com.rsimas.myfin.domain.enums.TipoLancamento;
+import com.rsimas.myfin.dto.LancamentoDTO;
 import com.rsimas.myfin.exceptions.RegraNegocioException;
 import com.rsimas.myfin.repositories.LancamentoRepository;
 import com.rsimas.myfin.services.LancamentoService;
+import com.rsimas.myfin.services.UsuarioService;
 
 public class LancamentoServiceImp implements LancamentoService {
 
 	private LancamentoRepository repository;
+	
+	@Autowired
+	private UsuarioService userService;
 
 	public LancamentoServiceImp(LancamentoRepository repo) {
 		this.repository = repo;
@@ -87,5 +95,23 @@ public class LancamentoServiceImp implements LancamentoService {
 		if (lancamento.getTipo() == null) {
 			throw new RegraNegocioException("Informe um tipo de Lançamento.");
 		}
+	}
+
+	@Override
+	public Lancamento fromDTO(LancamentoDTO objDTO) {
+		Lancamento newobj = new Lancamento();
+		newobj.setId(objDTO.getId());
+		newobj.setDescricao(objDTO.getDescricao());
+		newobj.setAno(objDTO.getAno());
+		newobj.setValor(objDTO.getValor());
+		
+		Usuario usuario = userService.buscarPorId(objDTO.getId()).
+				orElseThrow(() -> new RegraNegocioException("Usuario não encontrado para o id informado!"));
+		
+		newobj.setId(usuario.getId());
+		newobj.setTipo(TipoLancamento.valueOf(objDTO.getTipo()));
+		newobj.setStatus(StatusLancamento.valueOf(objDTO.getStatus()));
+		
+		return newobj;
 	}
 }
