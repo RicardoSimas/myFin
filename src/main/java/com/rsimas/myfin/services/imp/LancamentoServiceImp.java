@@ -3,6 +3,7 @@ package com.rsimas.myfin.services.imp;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -113,5 +114,10 @@ public class LancamentoServiceImp implements LancamentoService {
 		newobj.setStatus(StatusLancamento.valueOf(objDTO.getStatus()));
 		
 		return newobj;
+	}
+
+	@Override
+	public Optional<Lancamento> buscarPorId(Long id) {
+		return repository.findById(id);
 	}
 }
