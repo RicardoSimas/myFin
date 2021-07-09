@@ -33,14 +33,28 @@ public class LancamentoResource {
 		}
 	}
 
-	@RequestMapping(value = "{id}", method = RequestMethod.PUT)
-	public ResponseEntity atualizar(@PathVariable Long id, @RequestBody LancamentoDTO objDTO) {
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody LancamentoDTO objDTO) {
 		return service.buscarPorId(id).map(entity -> {
-			Lancamento newObj = service.fromDTO(objDTO);
-			newObj.setId(entity.getId());
-			Lancamento objAtualizado = service.Atualizar(newObj);
-
-			return ResponseEntity.ok(objAtualizado);
-		}).orElseGet(() -> new ResponseEntity("Lancamento não encontrado na base!", HttpStatus.BAD_REQUEST));
+			try{
+				Lancamento newObj = service.fromDTO(objDTO);
+				newObj.setId(entity.getId());
+				Lancamento objAtualizado = service.Atualizar(newObj);
+				return ResponseEntity.ok(objAtualizado);
+		}catch(RegraNegocioException e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		
+		}).orElseGet( () ->
+			new ResponseEntity("Lancamento não encontrado na base!", HttpStatus.BAD_REQUEST));
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity deletar(@PathVariable("id") Long id) {
+		return service.buscarPorId(id).map(entity -> {
+			service.deletar(entity);
+			return new ResponseEntity(HttpStatus.NO_CONTENT);
+		}).orElseGet( () -> 
+			new ResponseEntity("Lancamento não encontrado", HttpStatus.BAD_REQUEST));
 	}
 }
