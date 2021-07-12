@@ -1,6 +1,5 @@
 package com.rsimas.myfin.resources;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,8 +17,11 @@ import com.rsimas.myfin.services.UsuarioService;
 @RequestMapping(value="/api/usuarios")
 public class UsuarioResource {
 	
-	@Autowired
-	UsuarioService service;
+	private UsuarioService service;
+	
+	public UsuarioResource(UsuarioService userService) {
+		this.service = userService;
+	}
 	
 	@RequestMapping(value="/autenticar", method=RequestMethod.POST)
 	public ResponseEntity autenticar( @RequestBody UsuarioDTO objDto) {

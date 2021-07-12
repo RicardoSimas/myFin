@@ -22,12 +22,13 @@ import com.rsimas.myfin.services.UsuarioService;
 @RestController
 @RequestMapping(value = "/api/lancamentos")
 public class LancamentoResource {
-
+	
 	private LancamentoService service;
 	private UsuarioService usuarioService;
 
-	public LancamentoResource(LancamentoService service) {
+	public LancamentoResource(LancamentoService service, UsuarioService userService) {
 		this.service = service;
+		this.usuarioService = userService;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -35,19 +36,19 @@ public class LancamentoResource {
 			@RequestParam(value = "descricao", required = false) String descricao,
 			@RequestParam(value = "mes", required = false) Integer mes,
 			@RequestParam(value = "ano", required = false) Integer ano,
-			@RequestParam("usuario") Long idUsuario) {
+			@RequestParam("usuario") Long id) {
 		
 		Lancamento lancamentoFiltro = new Lancamento();
 		lancamentoFiltro.setDescricao(descricao);
 		lancamentoFiltro.setMes(mes);
 		lancamentoFiltro.setAno(ano);
 		
-		Optional<Usuario> usuario = usuarioService.buscarPorId(idUsuario);
+		Optional<Usuario> usuario = usuarioService.buscarPorId(id);
 		if(!usuario.isPresent()) {
 			return ResponseEntity.badRequest().body("Impossível realizar consulta. Usuario não encontrado na base!");
 		}else {
 			lancamentoFiltro.setUsuario(usuario.get());
-		}
+		}	
 		
 		List<Lancamento> lancamentos = service.buscar(lancamentoFiltro);
 		
@@ -58,6 +59,7 @@ public class LancamentoResource {
 	public ResponseEntity salvar(@RequestBody LancamentoDTO objDTO) {
 		try {
 			Lancamento newObj = service.fromDTO(objDTO);
+			newObj = service.salvar(newObj);
 			return new ResponseEntity(newObj, HttpStatus.CREATED);
 		} catch (RegraNegocioException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
