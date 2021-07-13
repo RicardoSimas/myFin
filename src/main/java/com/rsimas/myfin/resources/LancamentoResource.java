@@ -3,6 +3,8 @@ package com.rsimas.myfin.resources;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.Entity;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rsimas.myfin.domain.Lancamento;
 import com.rsimas.myfin.domain.Usuario;
+import com.rsimas.myfin.domain.enums.StatusLancamento;
+import com.rsimas.myfin.dto.AtualizaStatusDTO;
 import com.rsimas.myfin.dto.LancamentoDTO;
 import com.rsimas.myfin.exceptions.RegraNegocioException;
 import com.rsimas.myfin.services.LancamentoService;
@@ -80,6 +84,25 @@ public class LancamentoResource {
 		
 		}).orElseGet( () ->
 			new ResponseEntity("Lancamento não encontrado na base!", HttpStatus.BAD_REQUEST));
+	}
+	
+	@RequestMapping(value = "/{id}/atualiza-status" ,method = RequestMethod.PUT)
+	public ResponseEntity atualizaStatus(@PathVariable("id") Long id, @RequestBody AtualizaStatusDTO objDTO) {
+		return service.buscarPorId(id).map(entity -> {
+			StatusLancamento statusSelecionado = StatusLancamento.valueOf(objDTO.getStatus());
+			
+			if(statusSelecionado == null) {
+				return ResponseEntity.badRequest().body("Status não atualizado. Informe um status válido!");
+			}
+			try {
+				entity.setStatus(statusSelecionado);
+				service.Atualizar(entity);
+				return ResponseEntity.ok(entity);
+			}catch(RegraNegocioException e) {
+				return ResponseEntity.badRequest().body(e.getMessage());
+			}
+		}).orElseGet( () ->
+		new ResponseEntity("Lancamento não encontrado na base!", HttpStatus.BAD_REQUEST));	
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
