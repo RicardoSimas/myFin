@@ -1,5 +1,6 @@
 package com.rsimas.myfin.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,4 +25,6 @@ public interface LancamentoService {
 	Lancamento fromDTO(LancamentoDTO objDTO);
 
 	Optional<Lancamento> buscarPorId(Long id);
+	
+	BigDecimal obterSaldoPorUsuario(Long id);
 }

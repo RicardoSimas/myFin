@@ -127,4 +127,24 @@ public class LancamentoServiceImp implements LancamentoService {
 	public Optional<Lancamento> buscarPorId(Long id) {
 		return repository.findById(id);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public BigDecimal obterSaldoPorUsuario(Long id) {
+		BigDecimal receitas = repository.
+				obterSaldoPorTipoLancamentoEUsuario(id, TipoLancamento.RECEITA.name());
+		
+		BigDecimal despesas = repository.
+				obterSaldoPorTipoLancamentoEUsuario(id, TipoLancamento.DESPESA.name());
+		
+		if(receitas == null) {
+			receitas = BigDecimal.ZERO;
+		}
+		
+		if(despesas == null) {
+			despesas = BigDecimal.ZERO;
+		}
+		
+		return receitas.subtract(despesas);
+	}
 }
