@@ -39,8 +39,8 @@ public class UsuarioServiceTest {
 	public void deveSalvarUmUsuarioComSucesso() {
 		Assertions.assertDoesNotThrow(()-> {
 			//cenário
-			Usuario user = Usuario.builder().
-					id(1l)
+			Usuario user = Usuario.builder()
+					.id(1l)
 					.email("email@test.com")
 					.nome("usuario")
 					.senha("senha")

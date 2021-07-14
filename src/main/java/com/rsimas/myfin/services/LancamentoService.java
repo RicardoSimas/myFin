@@ -22,8 +22,6 @@ public interface LancamentoService {
 	
 	void validar(Lancamento lancamento);
 	
-	Lancamento fromDTO(LancamentoDTO objDTO);
-
 	Optional<Lancamento> buscarPorId(Long id);
 	
 	BigDecimal obterSaldoPorUsuario(Long id);

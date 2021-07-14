@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.assertj.AssertableReactiveWebApplicationContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -87,9 +86,9 @@ public class LancamentoRepositoryTest {
 		return lancamento;
 	}
 
-	private Lancamento criarLancamento() {
+	public static Lancamento criarLancamento() {
 		Lancamento lancamento = Lancamento.builder().ano(2019).mes(1).descricao("Lancamento")
-				.valor(BigDecimal.valueOf(10)).tipo(TipoLancamento.DESPESA).status(StatusLancamento.PENDENTE)
+				.valor(BigDecimal.valueOf(15)).tipo(TipoLancamento.DESPESA).status(StatusLancamento.PENDENTE)
 				.dataCadastro(LocalDate.now()).build();
 
 		return lancamento;

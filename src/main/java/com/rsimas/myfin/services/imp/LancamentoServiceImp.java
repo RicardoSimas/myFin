@@ -12,24 +12,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rsimas.myfin.domain.Lancamento;
-import com.rsimas.myfin.domain.Usuario;
 import com.rsimas.myfin.domain.enums.StatusLancamento;
 import com.rsimas.myfin.domain.enums.TipoLancamento;
-import com.rsimas.myfin.dto.LancamentoDTO;
 import com.rsimas.myfin.exceptions.RegraNegocioException;
 import com.rsimas.myfin.repositories.LancamentoRepository;
 import com.rsimas.myfin.services.LancamentoService;
-import com.rsimas.myfin.services.UsuarioService;
 
 @Service
 public class LancamentoServiceImp implements LancamentoService {
-
+	
 	private LancamentoRepository repository;
-	private UsuarioService userService;
-
-	public LancamentoServiceImp(LancamentoRepository repo, UsuarioService userService) {
+	
+	public LancamentoServiceImp(LancamentoRepository repo) {
 		this.repository = repo;
-		this.userService = userService;
 	}
 
 	@Override
@@ -52,7 +47,6 @@ public class LancamentoServiceImp implements LancamentoService {
 	public void deletar(Lancamento lancamento) {
 		Objects.requireNonNull(lancamento.getId());
 		repository.delete(lancamento);
-
 	}
 
 	@Override
@@ -96,31 +90,6 @@ public class LancamentoServiceImp implements LancamentoService {
 		if (lancamento.getTipo() == null) {
 			throw new RegraNegocioException("Informe um tipo de Lançamento.");
 		}
-	}
-
-	@Override
-	public Lancamento fromDTO(LancamentoDTO objDTO) {
-		Lancamento newobj = new Lancamento();
-		newobj.setId(objDTO.getId());
-		newobj.setDescricao(objDTO.getDescricao());
-		newobj.setAno(objDTO.getAno());
-		newobj.setMes(objDTO.getMes());
-		newobj.setValor(objDTO.getValor());
-		
-		Usuario usuario = userService.buscarPorId(objDTO.getUsuario())
-				.orElseThrow(() -> new RegraNegocioException("Usuario não encontrado para o id informado!"));
-		
-		newobj.setUsuario(usuario);
-		
-		if(objDTO.getTipo() != null) {
-			newobj.setTipo(TipoLancamento.valueOf(objDTO.getTipo()));
-		}
-		
-		if(objDTO.getStatus() != null) {
-			newobj.setStatus(StatusLancamento.valueOf(objDTO.getStatus()));
-		}
-		
-		return newobj;
 	}
 
 	@Override
