@@ -75,7 +75,7 @@ public class LancamentoResource {
 			try{
 				Lancamento newObj = fromDTO(objDTO);
 				newObj.setId(entity.getId());
-				Lancamento objAtualizado = service.Atualizar(newObj);
+				Lancamento objAtualizado = service.atualizar(newObj);
 				return ResponseEntity.ok(objAtualizado);
 		}catch(RegraNegocioException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -95,7 +95,7 @@ public class LancamentoResource {
 			}
 			try {
 				entity.setStatus(statusSelecionado);
-				service.Atualizar(entity);
+				service.atualizar(entity);
 				return ResponseEntity.ok(entity);
 			}catch(RegraNegocioException e) {
 				return ResponseEntity.badRequest().body(e.getMessage());

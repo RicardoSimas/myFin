@@ -6,13 +6,12 @@ import java.util.Optional;
 
 import com.rsimas.myfin.domain.Lancamento;
 import com.rsimas.myfin.domain.enums.StatusLancamento;
-import com.rsimas.myfin.dto.LancamentoDTO;
 
 public interface LancamentoService {
 	
 	Lancamento salvar(Lancamento lancamento);
 	
-	Lancamento Atualizar(Lancamento lancamento);
+	Lancamento atualizar(Lancamento lancamento);
 	
 	void deletar(Lancamento lancamento);
 	
