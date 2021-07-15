@@ -1,6 +1,10 @@
 package com.rsimas.myfin.services;
 
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
+import org.assertj.core.util.Arrays;
+import org.hibernate.criterion.Example;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -94,5 +98,20 @@ public class LancamentoServiceTest {
 		Assertions.catchThrowableOfType(()-> service.deletar(lancamento), NullPointerException.class);
 		
 		Mockito.verify(repository, Mockito.never()).delete(lancamento);
+	}
+	
+	@Test
+	public void deveFiltrarLancamento() {
+		Lancamento lancamento = LancamentoRepositoryTest.criarLancamento();
+		lancamento.setId(1l);
+		
+		List<Lancamento> lista = java.util.Arrays.asList(lancamento);
+		Mockito.when(repository
+				.findAll(Mockito.any(org.springframework.data.domain.Example.class)))
+				.thenReturn(lista);		
+		
+		List<Lancamento> result = service.buscar(lancamento);
+		
+		Assertions.assertThat(result).isNotEmpty().hasSize(1).contains(lancamento);
 	}
 }
