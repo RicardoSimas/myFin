@@ -1,6 +1,7 @@
 package com.rsimas.myfin.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.assertj.core.util.Arrays;
@@ -113,5 +114,43 @@ public class LancamentoServiceTest {
 		List<Lancamento> result = service.buscar(lancamento);
 		
 		Assertions.assertThat(result).isNotEmpty().hasSize(1).contains(lancamento);
+	}
+	
+	@Test
+	public void deveAlterarStatusDeUmLancamento() {
+		Lancamento lancamento = LancamentoRepositoryTest.criarLancamento();
+		lancamento.setId(1l);
+		lancamento.setStatus(StatusLancamento.PENDENTE);
+		
+		StatusLancamento novoStatus = StatusLancamento.EFETIVADO;
+		Mockito.doReturn(lancamento).when(service).atualizar(lancamento);
+		
+		service.atualizarStatus(lancamento, novoStatus);
+		
+		Assertions.assertThat(lancamento.getStatus()).isEqualTo(novoStatus);
+		Mockito.verify(service, Mockito.times(1)).atualizar(lancamento);
+	}
+	
+	@Test
+	public void deveBuscarUmLancamentoPorId() {
+		Lancamento lancamento = LancamentoRepositoryTest.criarLancamento();
+		lancamento.setId(1l);
+		
+		Mockito.when(repository.findById(lancamento.getId())).thenReturn(Optional.of(lancamento));
+		
+		Optional<Lancamento> objRetornado = service.buscarPorId(lancamento.getId());
+		
+		Assertions.assertThat(lancamento.getId()).isEqualTo(objRetornado.get().getId());
+	}
+	
+	@Test
+	public void deveRetornarVazioQuandoBuscarUmLancamentoInexistentePorId() {
+		Lancamento lancamento = LancamentoRepositoryTest.criarLancamento();
+				
+		Mockito.when( repository.findById(lancamento.getId()) ).thenReturn(Optional.empty());
+		
+		Optional<Lancamento> objRetornado = service.buscarPorId(lancamento.getId());
+		
+		Assertions.assertThat(objRetornado.isPresent()).isFalse();
 	}
 }
