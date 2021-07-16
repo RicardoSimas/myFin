@@ -19,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rsimas.myfin.domain.Usuario;
 import com.rsimas.myfin.dto.UsuarioDTO;
 import com.rsimas.myfin.exceptions.ErroAutenticacao;
+import com.rsimas.myfin.exceptions.RegraNegocioException;
 import com.rsimas.myfin.services.LancamentoService;
 import com.rsimas.myfin.services.UsuarioService;
 
@@ -89,5 +90,45 @@ public class UsuarioResourceTest {
 			.perform(request)
 			.andExpect( MockMvcResultMatchers.status().isBadRequest() )
 		;
+	}
+	
+	@Test
+	public void deveCriarUmNovoUsuario() throws Exception{
+		//Cenário
+		String email = "usuario@email.com";
+		String senha = "senha";
+		
+		UsuarioDTO dto = UsuarioDTO.builder().email("usuario@email.com").senha("senha").build();
+		Usuario user = Usuario.builder().id(1l).email(email).senha(senha).build();
+		Mockito.when(service.salvar(Mockito.any(Usuario.class))).thenReturn(user);
+		
+		String json = new ObjectMapper().writeValueAsString(dto);
+		
+		//Execução e verificação
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+													.post(API)
+													.accept(JSON)
+													.contentType(JSON)
+													.content(json);
+		
+		mvc
+			.perform(request)
+			.andExpect( MockMvcResultMatchers.status().isCreated())
+		;
+	}
+	
+	@Test
+	public void deveRetornarBadRequestAoTentarCriarUmUsuarioInvalido() throws Exception{
+		
+		Mockito.when(service.salvar(Mockito.any(Usuario.class))).thenThrow(RegraNegocioException.class);
+		
+		//Execução e verificação
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+													.post(API)
+													.accept(JSON)
+													.contentType(JSON);
+		mvc
+			.perform(request)
+			.andExpect( MockMvcResultMatchers.status().isBadRequest());
 	}
 }
