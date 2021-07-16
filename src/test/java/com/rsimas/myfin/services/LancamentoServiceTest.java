@@ -20,7 +20,6 @@ import com.rsimas.myfin.domain.Lancamento;
 import com.rsimas.myfin.domain.Usuario;
 import com.rsimas.myfin.domain.enums.StatusLancamento;
 import com.rsimas.myfin.domain.enums.TipoLancamento;
-import com.rsimas.myfin.exceptions.ErroAutenticacao;
 import com.rsimas.myfin.exceptions.RegraNegocioException;
 import com.rsimas.myfin.repositories.LancamentoRepository;
 import com.rsimas.myfin.repositories.LancamentoRepositoryTest;
@@ -103,6 +102,7 @@ public class LancamentoServiceTest {
 		Mockito.verify(repository, Mockito.never()).delete(lancamento);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void deveFiltrarLancamento() {
 		Lancamento lancamento = LancamentoRepositoryTest.criarLancamento();

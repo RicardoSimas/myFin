@@ -30,6 +30,7 @@ public class UsuarioResource {
 		this.lancamentoService = service;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/autenticar", method=RequestMethod.POST)
 	public ResponseEntity autenticar( @RequestBody UsuarioDTO objDto) {
 		
@@ -41,6 +42,7 @@ public class UsuarioResource {
 		}
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity salvar( @RequestBody UsuarioDTO objDto) {
 		
@@ -54,6 +56,7 @@ public class UsuarioResource {
 		}
 	}
 	
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/{id}/saldo", method = RequestMethod.GET)
 	public ResponseEntity obterSaldo( @PathVariable ("id") Long id ) {
 		Optional<Usuario> user = service.buscarPorId(id);
