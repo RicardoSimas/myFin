@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,8 @@ public class UsuarioResource {
 		this.lancamentoService = service;
 	}
 	
+	@CrossOrigin(origins = "*")
+	@GetMapping("/greeting")
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value="/autenticar", method=RequestMethod.POST)
 	public ResponseEntity autenticar( @RequestBody UsuarioDTO objDto) {
@@ -42,6 +46,8 @@ public class UsuarioResource {
 		}
 	}
 	
+	@CrossOrigin(origins = "*")
+	@GetMapping("/greeting")
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity salvar( @RequestBody UsuarioDTO objDto) {
@@ -56,6 +62,8 @@ public class UsuarioResource {
 		}
 	}
 	
+	@CrossOrigin(origins = "*")
+	@GetMapping("/greeting")
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/{id}/saldo", method = RequestMethod.GET)
 	public ResponseEntity obterSaldo( @PathVariable ("id") Long id ) {

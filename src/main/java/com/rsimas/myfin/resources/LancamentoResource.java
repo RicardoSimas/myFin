@@ -5,6 +5,8 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +36,8 @@ public class LancamentoResource {
 		this.usuarioService = userService;
 	}
 	
+	@CrossOrigin(origins = "*")
+	@GetMapping("/greeting")
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity buscar(
@@ -58,7 +62,9 @@ public class LancamentoResource {
 		
 		return ResponseEntity.ok(lancamentos);
 	}
-
+	
+	@CrossOrigin(origins = "*")
+	@GetMapping("/greeting")
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity salvar(@RequestBody LancamentoDTO objDTO) {
@@ -71,6 +77,8 @@ public class LancamentoResource {
 		}
 	}
 
+	@CrossOrigin(origins = "*")
+	@GetMapping("/greeting")
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody LancamentoDTO objDTO) {
@@ -88,6 +96,8 @@ public class LancamentoResource {
 			new ResponseEntity("Lancamento não encontrado na base!", HttpStatus.BAD_REQUEST));
 	}
 	
+	@CrossOrigin(origins = "*")
+	@GetMapping("/greeting")
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/{id}/atualiza-status", method = RequestMethod.PUT)
 	public ResponseEntity atualizaStatus(@PathVariable("id") Long id, @RequestBody AtualizaStatusDTO objDTO) {
@@ -108,6 +118,8 @@ public class LancamentoResource {
 		new ResponseEntity("Lancamento não encontrado na base!", HttpStatus.BAD_REQUEST));	
 	}
 	
+	@CrossOrigin(origins = "*")
+	@GetMapping("/greeting")
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity deletar(@PathVariable("id") Long id) {
