@@ -63,6 +63,16 @@ public class LancamentoResource {
 		return ResponseEntity.ok(lancamentos);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@CrossOrigin(origins = "*")
+	@GetMapping("/greeting")
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public ResponseEntity buscarPorId(@PathVariable("id") Long id) {
+		return service.buscarPorId(id)
+				.map( lancamento -> new ResponseEntity(converter(lancamento), HttpStatus.OK))
+				.orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND));
+	}
+	
 	@CrossOrigin(origins = "*")
 	@GetMapping("/greeting")
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -128,6 +138,19 @@ public class LancamentoResource {
 			return new ResponseEntity(HttpStatus.NO_CONTENT);
 		}).orElseGet( () -> 
 			new ResponseEntity("Lancamento não encontrado", HttpStatus.BAD_REQUEST));
+	}
+	
+	public LancamentoDTO converter(Lancamento lancamento) {
+		return LancamentoDTO.builder()
+				.id(lancamento.getId())
+				.descricao(lancamento.getDescricao())
+				.Valor(lancamento.getValor())
+				.mes(lancamento.getMes())
+				.ano(lancamento.getAno())
+				.Status(lancamento.getStatus().name())
+				.tipo(lancamento.getTipo().name())
+				.usuario(lancamento.getUsuario().getId())
+				.build();
 	}
 	
 	public Lancamento fromDTO(LancamentoDTO objDTO) {
